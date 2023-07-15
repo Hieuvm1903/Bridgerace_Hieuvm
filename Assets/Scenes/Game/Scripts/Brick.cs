@@ -7,32 +7,32 @@ public class Brick : MonoBehaviour
     // Start is called before the first frame update
     public MeshRenderer rend;
 
-    void Start()
-    {
-        
-    }
-
-   
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    public void changecolor(Color color)
+    public void ChangeColor(Color color)
     {
         rend.material.color = color;
     }
-    public void faded()
-    {
+    public void Faded()
+    {              
         rend.material.color = Color.gray;
+        GetComponent<BoxCollider>().isTrigger = false;
+        StartCoroutine(ITrigger());
     }
-    public bool matchcol(Color col1, Color col2)
+    public void Ondespawn()
     {
-        var r = Mathf.Abs(col1.r - col2.r);
-        var g = Mathf.Abs(col1.g - col2.g);
-        var b = Mathf.Abs(col1.b - col2.b);
-        var a = Mathf.Abs(col1.a - col2.a);
-        return Mathf.Sqrt(r * r + g * g + b * b + a * a) < 0.5f;
-
+        //pool
+        Destroy(GetComponent<Rigidbody>());
+        
+        Pooling.Instance.BackToPool(this);
+        //Destroy(gameObject);
     }
+    IEnumerator ITrigger()
+    {
+        
+        GetComponent<BoxCollider>().isTrigger = true;
+        yield return new WaitForSeconds(2f);
+    }
+
+    
+
+
 }

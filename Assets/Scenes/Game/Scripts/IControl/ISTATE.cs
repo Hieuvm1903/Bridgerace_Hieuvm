@@ -5,12 +5,12 @@ using UnityEngine;
    // Start is called before the first frame update
     public interface IState
     {
-        void Enterenemy(Enemy enemy);
+        void EnterEnemy(Enemy enemy);
 
 
-        void Onexcute(Enemy enemy);
+        void OnExcute(Enemy enemy);
 
-        void Onexit(Enemy enemy);
+        void OnExit(Enemy enemy);
 
     }
 

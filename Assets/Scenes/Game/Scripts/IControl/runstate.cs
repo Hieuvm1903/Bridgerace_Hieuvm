@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class runstate : MonoBehaviour
+public class RunState : IState
 {
-    // Start is called before the first frame update
-    void Start()
+    public void EnterEnemy(Enemy enemy)
     {
-        
+        enemy.Setposition();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void OnExcute(Enemy enemy)
     {
-        
+        if (enemy.numbrick >= enemy.numstairs)
+        {           
+            enemy.ChangeState(new BuildState());           
+        }
+    }
+    public void OnExit(Enemy enemy)
+    {
+
     }
 }

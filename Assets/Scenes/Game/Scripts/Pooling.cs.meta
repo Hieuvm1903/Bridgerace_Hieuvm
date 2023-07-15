@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 2f299056bfc432d42a3a167c7180ccd5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - bricktopool: {fileID: 2891985672180895648, guid: a91f35fd483589c408131729b9a47f00, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

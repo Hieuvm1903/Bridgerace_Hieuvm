@@ -11,43 +11,17 @@ public class Lvlmanager : Singleton<Lvlmanager>
     public List<Spawner> listofspawners;
     public GameObject finishbox;
     public List<Enemy> listofenemies  ;
-    public List<Character> listofcharacters;
-    public bool iswin;
+    public List<Character> listofcharacters;    
+    const string MAIN_SCENE = "Main";
     private void Start()
     {
         OnInit();
+       
     }
-    public void OnInit()
-    {
-        Resume();
-        listofenemies = FindObjectsOfType<Enemy>().ToList();
-        listofcharacters = FindObjectsOfType<Character>().ToList();
-        Spawner map1 = listofspawners[0];
-        for (int i = 0; i < listofspawners.Count; i++)
-        {
-            listofspawners[i].OnInit();
-        }
-        for (int i = 0; i < listofcharacters.Count; i++)
-        {
-            Character character = listofcharacters[i];
-            character.colorindex = i;           
-            map1.AddColor(character.rend.material.color);
-            map1.SpawnColor(i);
-
-        }
-        for (int i = 0; i < listofenemies.Count; i++)
-        {
-            Enemy enemy = listofenemies[i];
-            enemy.OnInit();
-            enemy.Setposition();
-            enemy.ChangeState(new RunState());
-        }
-        //Camfl.Instance.settarget(Player.Instance.transform);
-    }
+    
     // Update is called once per frame
     void Update()
-    {
-        if(!iswin)
+    {        
         for(int i = 0;i< listofenemies.Count;i++)
         {
             Enemy enemy = listofenemies[i];
@@ -59,13 +33,37 @@ public class Lvlmanager : Singleton<Lvlmanager>
             
         }
     }
+    public void OnInit()
+    {
+        Resume();
+        Spawner map1 = listofspawners[0];
+        for (int i = 0; i < listofspawners.Count; i++)
+        {
+            listofspawners[i].OnInit();
+        }
+        for (int i = 0; i < listofcharacters.Count; i++)
+        {
+            Character character = listofcharacters[i];
+            character.colorindex = i;
+            map1.AddColor(character.rend.material.color);
+            map1.SpawnColor(i);
+        }
+        for (int i = 0; i < listofenemies.Count; i++)
+        {
+            Enemy enemy = listofenemies[i];
+            enemy.OnInit();
+            enemy.SetNextBrick();
+            enemy.ChangeState(new RunState());
+        }
+
+    }
     public void ActiveSpawner(int i, Character character)
     {
         if (i > 0)
         {
             listofspawners[i - 1].DelBrick(character.colorindex);
         }
-        if (i + 1 <= listofspawners.Count)
+        if (i  < listofspawners.Count)
         {
             character.colorindex = listofspawners[i].listofcolors.Count;
             listofspawners[i].AddColor(character.rend.material.color);
@@ -75,7 +73,7 @@ public class Lvlmanager : Singleton<Lvlmanager>
             {
                 Enemy enemy = character.GetComponent<Enemy>();
                 enemy.listdestinations.Clear();
-                enemy.NextFloor();
+                enemy.NewFloor();
 
             }
         }
@@ -83,12 +81,13 @@ public class Lvlmanager : Singleton<Lvlmanager>
     }
     IEnumerator Iwin()
     {
+        
+        yield return new WaitForSeconds(1f);
         Pause();
         if (Player.Instance.iswin)
             UIManager.Instance.OpenUI<Win>().score.text = Random.Range(100, 200).ToString();
         else
             UIManager.Instance.OpenUI<Lose>().score.text = Random.Range(0, 100).ToString();
-        yield return new WaitForSeconds(3f);
     }
     public void OpenWin()
     {
@@ -96,8 +95,8 @@ public class Lvlmanager : Singleton<Lvlmanager>
     }
     public void RestartLevel()
     {
-        // Get the current scene's name or index
-        SceneManager.LoadScene("Main");
+        int scene = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(scene, LoadSceneMode.Single);
     }
     public void Pause()
     {

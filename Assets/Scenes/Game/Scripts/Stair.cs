@@ -4,19 +4,32 @@ using UnityEngine;
 
 public class Stair : MonoBehaviour
 {
-    [SerializeField]GameObject door;
     public Collider col;
     public MeshRenderer mesh;
-    private void Start()
+    const string LAST = "last";
+    const string PLAYER = "Player";
+    const string ENEMY = "Enemy";
+
+    private void OnTriggerEnter(Collider other)
     {
-        col = door.GetComponent<Collider>();
-        mesh = GetComponent<MeshRenderer>();
-        for(int i = 0; i<Lvlmanager.Instance.listofcharacters.Count;i++)
+        if (other.CompareTag(PLAYER) || other.CompareTag(ENEMY))
         {
-            OpenDoor(Lvlmanager.Instance.listofcharacters[i]);
-        }
+            Character character = other.GetComponent<Character>();
+            if (!CompareTag(LAST))
+                OpenDoor(character);
+
+        }                
     }
-    // Start is called before the first frame update
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag(PLAYER) || other.CompareTag(ENEMY))
+        {
+            Character character = other.GetComponent<Character>();
+            if (CompareTag(LAST))            
+                CloseDoor(character);
+            
+        }
+    }  
     public void OpenDoor(Character character)
     {        
         Physics.IgnoreCollision(character.collid, col,true);
@@ -31,13 +44,5 @@ public class Stair : MonoBehaviour
     {
         mesh.material.color = color;
     }
-    private void OnTriggerEnter(Collider other)
-    {
-        if(!CompareTag("last"))
-        if(other.CompareTag("Player") || other.CompareTag("Enemy"))
-        {
-            Character character = other.GetComponent<Character>();
-            OpenDoor(character);
-        }
-    }
+    
 }

@@ -5,34 +5,11 @@ using UnityEngine;
 public class Objpool : Singleton<Objpool>
 {
 
-    public List<GameObject> pool;
+    public List<GameObject> pool = new List<GameObject>();
     public GameObject objtopool;
     public int amount;
     // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-    protected override void Awake()
-    {
-        /*
-        amount = 200;
-        for(int i = 0; i<amount;i++)
-        {
-            pool.Add(getobj());
-
-        }
-        */
-        
-        pool = new List<GameObject>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public GameObject getobj()
+    public GameObject GetObj()
     {
         GameObject obj = Instantiate(objtopool, this.transform);
         obj.SetActive(false);
@@ -48,11 +25,11 @@ public class Objpool : Singleton<Objpool>
                 return pool[i];
             }
         }
-        GameObject obj = getobj();
+        GameObject obj = GetObj();
         pool.Add(obj);
         return obj;
     }
-    public void Returnpool(GameObject obj)
+    public void ReturnPool(GameObject obj)
     {
         obj.SetActive(false);
         obj.transform.SetParent(transform);

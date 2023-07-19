@@ -8,11 +8,11 @@ public class Camfl : MonoBehaviour
     public Transform target;
     public Vector3 offset;
     public float val = 100;
-    public float dist = 1.5f;
+    public float dist = 2.5f;
+    Transform tf ;
     void Start()
-    {
-        Player player = FindObjectOfType<Player>();
-        settarget(player.transform);
+    {        
+        tf = transform;
     }
 
     // Update is called once per frame
@@ -21,11 +21,8 @@ public class Camfl : MonoBehaviour
         
         
         Vector3 pos = target.position + offset*dist;
-        transform.position = Vector3.Lerp(transform.position, pos, val * Time.deltaTime);
+        tf.position = Vector3.Lerp(tf.position, pos, val * Time.deltaTime);
         
     }
-    public void settarget(Transform target)
-    {
-        this.target = target.transform;
-    }
+ 
 }

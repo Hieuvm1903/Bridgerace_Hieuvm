@@ -11,7 +11,7 @@ public class GameManager : Singleton<GameManager>
     //private static GameState gameState = GameState.MainMenu;
 
     // Start is called before the first frame update
-    protected override void Awake()
+     void Awake()
     {
         //base.Awake();
         Input.multiTouchEnabled = false;

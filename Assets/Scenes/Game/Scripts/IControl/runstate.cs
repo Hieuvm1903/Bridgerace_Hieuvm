@@ -6,7 +6,7 @@ public class RunState : IState
 {
     public void EnterEnemy(Enemy enemy)
     {
-        enemy.Setposition();
+        enemy.SetNextBrick();
     }
     public void OnExcute(Enemy enemy)
     {

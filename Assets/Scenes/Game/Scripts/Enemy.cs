@@ -9,89 +9,52 @@ public class Enemy : Character
     public List<Brick> listdestinations;    
     public IState currentstate;
     public int numstairs;
+   
+    protected override void AddBrick(Brick brick)
+    {
 
+        
+        base.AddBrick(brick);
 
-    // Start is called before the first frame update
-    
- 
+        if (numbrick < numstairs - 1)
+        {
+            SetNextBrick();
+        }
+        else
+        {
+            ChangeState(new BuildState());
+        }
+    }
     public override void OnInit()
     {
         onlvl = 0;
         numbrick = 0;
         iswin = false;
         base.OnInit();
-        ChangeAnim("Run");
-        
+        ChangeAnim("Run");       
         nav.speed = 3f;
         numstairs = 10;
-        NextFloor();
-        
-
+        NewFloor();
     }
-    public void NextFloor()
+    public void NewFloor()
     {
         listdestinations = Lvlmanager.Instance.listofspawners[onlvl].listofbricks[colorindex];
     }
-    // Update is called once per frame
-   public void Setposition()
+    public void SetNextBrick()
     {
                    
             Sort();
             if (listdestinations.Count > 0)
             { 
-                SetDestination(listdestinations[0].transform.position); 
+                SetDestination(listdestinations[0].tf.position); 
             }
 
         
     }
-    public override void Addbrick(Brick brick)
-    {      
-        base.Addbrick(brick);
-    }
     public void Sort()
     {
-        listdestinations.Sort((x, y) => Vector3.Distance(x.transform.position,transform.position).CompareTo(Vector3.Distance(y.transform.position, transform.position)));
-        listdestinations.Sort((x, y) => x.gameObject.activeInHierarchy.CompareTo(y.gameObject.activeInHierarchy));
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag ("Brick"))
-        {
-
-            Brick brick = other.GetComponent<Brick>();
-            Color col = brick.rend.material.color;
-            if(Match(col, Color.gray))
-            {               
-                brick.ChangeColor(rend.material.color);
-                Addbrick(brick);
-                
-                
-            }
-            if (Match(col, rend.material.color) )
-            {
-                Transform brickpos = brick.transform;
-                Lvlmanager.Instance.listofspawners[onlvl].listofunbrick[colorindex].Add(new Vector2(brickpos.position.x, brickpos.position.z));
-                Lvlmanager.Instance.listofspawners[onlvl].listofbricks[colorindex].Remove(brick);
-                Addbrick(brick);
-                if (numbrick < numstairs-1)
-                {
-                    Setposition();
-                }
-                else
-                {
-                    ChangeState(new BuildState());
-                }
-                
-            }
-        }
-        if (other.CompareTag("Finishbox"))
-        {
-            iswin = true;
-            
-            Lvlmanager.Instance.iswin = true;
-            Lvlmanager.Instance.OpenWin();
-        }
-    }
+        listdestinations.Sort((x, y) => Vector3.Distance(x.tf.position,tf.position).CompareTo(Vector3.Distance(y.tf.position, tf.position)));        
+    }   
     public void SetDestination(Vector3 pos)
     {
         nav.SetDestination(pos);

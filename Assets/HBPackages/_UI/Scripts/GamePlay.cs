@@ -8,8 +8,9 @@ public class GamePlay : UICanvas
     
     public void WinButton()
     {
-        SceneManager.LoadScene("Main");
         
+        SceneManager.LoadScene("Main");
+
         Close(0);
     }
 

@@ -24,7 +24,7 @@ public class BuildState : IState
         }
         if(enemy.iswin)
         {
-            enemy.ChangeAnim("Fall");
+            //enemy.ChangeAnim("Fall");
         }
        
             

@@ -6,6 +6,7 @@ public class Brick : MonoBehaviour
 {
     // Start is called before the first frame update
     public MeshRenderer rend;
+    public Transform tf;
 
     public void ChangeColor(Color color)
     {
@@ -17,19 +18,18 @@ public class Brick : MonoBehaviour
         GetComponent<BoxCollider>().isTrigger = false;
         StartCoroutine(ITrigger());
     }
-    public void Ondespawn()
+    public void OnDespawn()
     {
-        //pool
-        Destroy(GetComponent<Rigidbody>());
-        
+  
         Pooling.Instance.BackToPool(this);
         //Destroy(gameObject);
     }
     IEnumerator ITrigger()
     {
         
-        GetComponent<BoxCollider>().isTrigger = true;
+        
         yield return new WaitForSeconds(2f);
+        GetComponent<BoxCollider>().isTrigger = true;
     }
 
     

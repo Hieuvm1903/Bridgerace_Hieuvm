@@ -27,21 +27,17 @@ public class Player : Character
     void Start()
     {
         OnInit();
-        djoystick = FindObjectOfType<DynamicJoystick>();
-        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
     {
-        if( rb.velocity.z>0)
+        
+        if(tf.TransformDirection(Vector3.forward).z>0)
         {
             CheckBuildBridge();
-        }
-        
+        }    
         
     }
-
-    // Update is called once per frame
 
     private void FixedUpdate()
     {
@@ -51,7 +47,7 @@ public class Player : Character
         if (djoystick.Horizontal != 0 || djoystick.Vertical != 0)
         {
             ChangeAnim("Run");
-            transform.rotation = Quaternion.LookRotation(rb.velocity);
+            tf.rotation = Quaternion.LookRotation(rb.velocity);
         }
         else
         {
@@ -61,6 +57,7 @@ public class Player : Character
                 ChangeAnim("Idle");
         }
     }
+
     public Vector3 AdjustVelocityToSlope(Vector3 velocity)
     {
         var ray = new Ray(transform.position, Vector3.down);
